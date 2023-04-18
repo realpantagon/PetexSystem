@@ -7,9 +7,7 @@ export default function Exchange() {
   const [exchangeRate, setExchangeRate] = useState(0);
   const [exchangeAmount, setExchangeAmount] = useState(0);
   const [exchanges, setExchanges] = useState(() => {
-    if (typeof localStorage === 'undefined') {
-      return [];
-    }
+    
     const savedExchanges = localStorage.getItem('exchanges');
     return savedExchanges ? JSON.parse(savedExchanges) : [];
   }); // array to store the list of exchanges
