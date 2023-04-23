@@ -1,0 +1,115 @@
+.Header{
+    font-size: 50px;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+}
+
+
+.inputcontainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+.select {
+    padding: 8px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+  
+  .inrate, .inamount {
+    padding: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 8px;
+    margin-left: 8px;
+    margin-bottom: 8px;
+    width: 80px;
+}
+
+.rate,.amount{
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 90px;
+  }
+.currency{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.type {
+    padding: 8px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 90px;
+    margin-right: 30px;
+  }
+  
+  .addButton {
+    background-color: green;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  
+  .clearButton {
+    background-color: red;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+  }
+  
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 16px;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #333a75;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  div {
+    margin-top: 16px;
+  }
+  
+  .total{
+    font-size: 30px;
+    font-weight: bold;
+  }
+  .totaldata{
+    font-size: 30px;
+    font-weight: bold;
+    /* margin-left: 300px; */
+    text-align: right;
+  }
+
+  .Summary{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }

@@ -1,85 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-export default function Exchange() {
-  const currencyOptions = ['USD 50-100', 'USD 5-20', 'USD 1', 'EUR', 'JPY', 'GBP', 'SGD', 'AUD', 'CHF', 'HKD', 'CAD', 'NZD', 'SEK', 'TWD', 'NOK', 'MYR', 'CNY', 'KRW']; // array of available currency options
+function Dropdown() {
+  const options = ['USD 50-100', 'USD 5-20', 'USD 1', 'EUR', 'JPY', 'GBP', 'SGD', 'AUD', 'CHF', 'HKD', 'CAD', 'NZD', 'SEK', 'TWD', 'NOK', 'MYR', 'CNY', 'KRW'];
+  const [selectedOption, setSelectedOption] = useState('');
+  const [rate, setRate] = useState('');
+  const [amount, setAmount] = useState('');
+  const [type, setType] = useState('Buying');
+  const [data, setData] = useState([]);
 
-  const [currency, setCurrency] = useState('');
-  const [exchangeRate, setExchangeRate] = useState(0);
-  const [exchangeAmount, setExchangeAmount] = useState(0);
-  const [exchanges, setExchanges] = useState(() => {
-    
-    const savedExchanges = localStorage.getItem('exchanges');
-    return savedExchanges ? JSON.parse(savedExchanges) : [];
-  }); // array to store the list of exchanges
-
-  const handleSubmit = (event) => {
-    event.preventDefault(); // prevent the default form submission behavior
-    console.log('Currency:', currency);
-    console.log('Exchange Rate:', exchangeRate);
-    console.log('Exchange Amount:', exchangeAmount);
-    // you can add code here to process the form data, such as sending it to a server
-    const exchangeResult = exchangeRate * exchangeAmount;
-    const exchange = { currency, exchangeRate, exchangeAmount, exchangeResult };
-    const updatedExchanges = [...exchanges, exchange];
-    setExchanges(updatedExchanges); // add the new exchange to the list of exchanges
-    localStorage.setItem('exchanges', JSON.stringify(updatedExchanges)); // store the updated list of exchanges in local storage
-    setCurrency(''); // reset the currency input
-    setExchangeRate(0); // reset the exchange rate input
-    setExchangeAmount(0); // reset the exchange amount input
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
   };
-  
 
-  useEffect(() => {
-    const savedExchanges = localStorage.getItem('exchanges');
-    if (savedExchanges) {
-      setExchanges(JSON.parse(savedExchanges));
-      
-    }
-  }, []);
+  const handleInput1Change = (event) => {
+    setRate(event.target.value);
+  };
+
+  const handleInput2Change = (event) => {
+    setAmount(event.target.value);
+  };
+
+  const handleTypeChange = (event) => {
+    setType(event.target.value);
+  };
+
+  const handleAddClick = () => {
+    const newData = {
+      currency: selectedOption,
+      rate,
+      amount,
+      type,
+      total: type === 'Buying' ? rate * amount : -(rate * amount)
+    };
+    setData([...data, newData]);
+    setSelectedOption('');
+    setRate('');
+    setAmount('');
+  };
+
+  const handleClearClick = () => {
+    setData([]);
+  };
 
   return (
-    <div className="container">
-      <h1>Manage Exchange Money</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Select Currency:</label>
-          <select className="form-control" name="currency" value={currency} onChange={(event) => setCurrency(event.target.value)}>
-            <option value="">Select Currency</option>
-            {currencyOptions.map((currency, index) => (
-              <option key={index} value={currency}>{currency}</option>
-            ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Exchange Rate:</label>
-          <input type="number" className="form-control" name="exchangeRate" value={exchangeRate} onChange={(event) => setExchangeRate(event.target.value)} placeholder="Enter exchange rate" />
-        </div>
-        <div className="form-group">
-          <label>Exchange Amount:</label>
-          <input type="number" className="form-control" name="exchangeAmount" value={exchangeAmount} onChange={(event) => setExchangeAmount(event.target.value)} placeholder="Enter exchange amount" />
-        </div>
-        <button type="submit" className="btn btn-primary">Exchange</button>
-      </form>
-      <table className="table">
+    <div>
+        <label className='Header'>PETEX DATA</label>
+      <div className='inputcontainer'>
+      <label htmlFor="rate" className='currency'>Currency : </label>
+        <select value={selectedOption} onChange={handleOptionChange} className='select'>
+          <option value="">Select a Currency</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <label htmlFor="rate" className='rate'>Rate : </label>
+        <input id="rate" type="text" value={rate} onChange={handleInput1Change} className='inrate'/>
+        <label htmlFor="amount" className='amount'>Amount : </label>
+        <input id="amount" type="text" value={amount} onChange={handleInput2Change} className='inamount'/>
+        <select value={type} onChange={handleTypeChange} className='type'>
+          <option value="Buying">Buying</option>
+          <option value="Selling">Selling</option>
+        </select>
+        <button onClick={handleAddClick} className='addButton'>Add</button>
+      </div>
+      <table>
         <thead>
           <tr>
             <th>Currency</th>
-            <th>Exchange Rate</th>
-            <th>Exchange Amount</th>
-            <th>Exchange Result (THB)</th>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody>
-          {exchanges.map((exchange, index) => (
+          {data.map((item, index) => (
             <tr key={index}>
-              <td>{exchange.currency}</td>
-              <td>{exchange.exchangeRate}</td>
-              <td>{exchange.exchangeAmount}</td>
-              <td>{exchange.exchangeResult}</td>
+              <td>{item.currency}</td>
+              <td>{item.rate}</td>
+              <td>{item.amount}</td>
+              <td>{item.type}</td>
+              <td>{item.total}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      <div className='Summary'>
+        <p className='total'>Total : </p>
+        <p className='totaldata'>{data.reduce((acc, item) => acc + item.total, 0)} </p>
+      </div>
+      <button onClick={handleClearClick} className='clearButton'>Clear</button>
     </div>
-  )
+  );
 }
+
+export default Dropdown;
